@@ -17,14 +17,6 @@ for j in range(6):
 
         iterations += 1
 
-chances_z = chances_x
-for i, j in sorted(chances_x.items()):
-    for k, l in sorted(chances_z.items()):
-        square_radius = max(i, k)
-        if square_radius not in chances_xz:
-            chances_xz[square_radius] = (j + l) / 2
-        else:
-            chances_xz[square_radius] += (j + l) / 2
 
 for i in range(pack_size - 1):
     sorted_items = sorted(chances_x.items())
@@ -40,21 +32,11 @@ for i in range(pack_size - 1):
 
                     iterations += 1
 
-    chances_z = chances_x
-    for o, p in sorted(chances_x.items()):
-        for q, r in sorted(chances_z.items()):
-            square_radius = max(o, q)
-            if square_radius not in chances_xz:
-                chances_xz[square_radius] = (p + r) / 2
-            else:
-                chances_xz[square_radius] += (p + r) / 2
-
-sorted_items = sorted(chances_xz.items())
+sorted_items = sorted(chances_x.items())
 print(sorted_items)
 
 chances = []
 
-iterations *= 2
 for i, j in sorted_items:
     chances.append((i, j / iterations))
 
