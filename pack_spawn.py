@@ -32,27 +32,34 @@ for i in range(pack_size - 1):
 
                     iterations += 1
 
+
 sorted_items = sorted(chances_x.items())
 print(sorted_items)
 
-chances = []
+sorted_x = []
 
 for i, j in sorted_items:
-    chances.append((i, j / iterations))
+    sorted_x.append((i, j / iterations))
 
+print(sorted_x)
+sorted_z = sorted_x
+for i, j in sorted_x:
+    for k, l in sorted_z:
+        square_radius = max(i, k)
+        if square_radius not in chances_xz:
+            chances_xz[square_radius] = j * l
+        else:
+            chances_xz[square_radius] += j * l
+
+sorted_items_xz = sorted(chances_xz.items())
+cumulative_chances, x, z = [], [], []
 cum = 0
-cumulative_chances = []
-blocks = []
-overview = []
-for i, j in chances:
+for i, j in sorted_items_xz:
     cum += j
-    blocks.append(i)
-    cumulative_chances.append(cum * 100)
-    overview.append((i, cum * 100))
+    x.append(i)
+    z.append(round(cum, 10) * 100)
+    cumulative_chances.append((i, round(cum, 10) * 100))
 
-print(overview)
-
-plt.plot(blocks, cumulative_chances)
+print(cumulative_chances)
+plt.plot(x, z)
 plt.show()
-
-print(iterations)
