@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 chances_x = {}
 chances_xz = {}
 
-pack_size = 5
+pack_size = 4
 iterations = 0
 
 for j in range(6):
@@ -44,7 +44,7 @@ print(sorted_x)
 sorted_z = sorted_x
 for i, j in sorted_x:
     for k, l in sorted_z:
-        square_radius = max(i, k)
+        square_radius = i if abs(i) > abs(k) else k
         if square_radius not in chances_xz:
             chances_xz[square_radius] = j * l
         else:
@@ -55,12 +55,20 @@ print(sorted_items_xz)
 cumulative_chances, x, z = [], [], []
 cum = 0
 
+in_between = 0
 for i, j in sorted_items_xz:
     cum += j
     cumulative_chances.append((i, round(cum, 10) * 100))
     x.append(i)
     z.append(round(cum, 10) * 100)
+    if i == -5:
+        in_between -= cum
+
+    elif i == 5:
+        in_between += cum
 
 print(cumulative_chances)
 plt.plot(x, z)
 plt.show()
+
+print(in_between)
