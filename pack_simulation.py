@@ -1,54 +1,45 @@
 import java_random
 import matplotlib.pyplot as plt
+import numpy as np
 
-packsize = 4
+pack_size = 4
 iterations = 1000000
 random = java_random.Random()
 
-n = 1
-ranges = {}
-datapoints = []
+# list used to store the different distances from the pack centre for each pack spawn
+data_points_list = []
 
-while n < iterations:
+n = 0
+while n <= iterations:
+    print("Iteration: {}/{}".format(n, iterations))
     x = random.nextInt(6) - random.nextInt(6)
     y = random.nextInt(6) - random.nextInt(6)
     offset = x if abs(x) > abs(y) else y
-    datapoints.append(offset)
-    if offset not in ranges:
-        ranges[offset] = 1
-    else:
-        ranges[offset] += 1
+    data_points_list.append(offset)
 
-    for i in range(packsize - 1):
+    for i in range(pack_size - 1):
         x += random.nextInt(6) - random.nextInt(6)
         y += random.nextInt(6) - random.nextInt(6)
         offset = x if abs(x) > abs(y) else y
-        datapoints.append(offset)
-        if offset not in ranges:
-            ranges[offset] = 1
-        else:
-            ranges[offset] += 1
-        n += 1
+        data_points_list.append(offset)
+    n += 1
 
-sorted_ranges = sorted(ranges.items())
-total = 0
-for i, j in sorted_ranges:
-    total += j
+bins = [i for i in range(-20, 22)]
 
-sorted_normalised_ranges = [(i, j / total) for i, j in sorted_ranges]
-print(sorted_normalised_ranges)
+plt.hist(data_points_list, bins=bins, density=True)
+plt.show()
 
+data_points_hist = np.histogram(data_points_list, bins=bins, density=True)
+
+chances = data_points_hist[0]
+positions = data_points_hist[1]
+
+cum_chances = []
 cum = 0
-cum_ranges, x, y = [], [], []
-for i, j in sorted_normalised_ranges:
-    cum += j
-    x.append(i)
-    y.append(round(cum, 10) * 100)
-    cum_ranges.append((i, round(cum, 10) * 100))
+for i in range(41):
+    pos = positions[i]
+    chance = chances[i]
+    cum += chance
+    cum_chances.append((pos, round(cum * 100, 10)))
 
-print(cum_ranges)
-plt.plot(x, y, c='r')
-plt.show()
-
-plt.hist(datapoints, bins=20)
-plt.show()
+print(cum_chances)

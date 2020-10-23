@@ -1,6 +1,7 @@
 import time
 import math
 
+
 class Random(object):
     """
     An implementation of the Java SE 6 random number generator.
